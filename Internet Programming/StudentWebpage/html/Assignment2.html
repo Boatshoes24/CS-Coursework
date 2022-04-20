@@ -1,0 +1,88 @@
+<!-- 
+    Name: Wade Moulton
+    Date: 09/15/2020
+    Class: CS 4720
+    Section: W01
+    Instructor: Dr. Sarah North
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/Assigment2.css">
+    <title>Assignment 2</title>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="nav main-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="./Assignment2.html">Reset Page</a></li>
+                <li><a href="../media/files/WadeMoulton_Assignment2.docx" download>Report Download</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1 class="my-name">Assignment 2</h1>
+    <div class="container">
+        <section class="content-section">
+            <h2 class="section-header">Cell Manipulation</h2>
+            <p class="inner-content"> The purpose of this assignment is to provide a method
+                to add, remove, and sort cells. 
+            </p>
+            <div id="cell-div">
+                <table id="input-table">
+                    <thead>
+                        <tr>
+                            <th>Num</th>
+                            <th>Input</th>
+                            <th>Length</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td id="td-first-num"></td>
+                        <td><input type="text" id="td-first-input"></td>
+                        <td id="td-first-count"></td>
+                    </tr>
+                </table>               
+            </div>
+            <div class="btn-container">
+                <button id="add-cell-btn">Add Cell</button>
+                <button id="remove-cell-btn">Remove Cell</button>
+                <button id="sort-cell-btn">Sort Cells</button>
+            </div>
+        </section>
+        <section class="content-section">
+            <h2 class="section-header">squareNumber() Function</h2>
+            <p class="inner-content">Enter a number and press the button to square!</p>
+            <p id="square-number-value"></p>
+            <input type="text" class="functionInputs" id="square-number-input">
+            <button id="square-number-submit-btn">Square Me!</button>
+            <button id="square-number-reset-btn">Reset</button>
+        </section>
+        <section class="content-section">
+            <h2 class="section-header">fixStart() Function</h2>
+            <p class="inner-content">Enter a string to replace all occurences of the first letter with *'s!</p>
+            <p id="fix-start-value"></p>
+            <input type="text" class="functionInputs" id="fix-start-input">
+            <button id="fix-start-submit">Fix Me!</button>
+            <button id="fix-start-reset">Reset</button>
+        </section>
+        <section class="content-section">
+            <h2 class="section-header">notBad() Function</h2>
+            <p class="inner-content">Finds text between not...bad and replaces with good!</p>
+            <p id="not-bad-value"></p>
+            <input type="text" class="functionInputs" id="not-bad-input">
+            <button id="not-bad-submit">Not Bad!</button>
+            <button id="not-bad-reset">Reset</button>
+        </section>
+    </div>
+<script src="../scripts/Assignment2.js"></script>
+<script src="../scripts/squarenumber.js"></script>
+<script src="../scripts/fixstart.js"></script>
+<script src="../scripts/notbad.js"></script>
+</body>
+</html>

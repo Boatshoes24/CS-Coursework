@@ -1,0 +1,273 @@
+<!-- 
+    Name: Wade Moulton
+    Date: 10/12/2020
+    Class: CS 4720
+    Section: W01
+    Instructor: Dr. Sarah North
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="../styles.css">
+     <link rel="stylesheet" href="../css/Assigment2.css">
+     <link rel="stylesheet" href="../css/prism.css">
+     <title>Assignment 4 - Sockets</title>
+ </head>
+ <body>
+     <header class="main-header">
+         <nav class="nav main-nav">
+             <ul>
+                 <li><a href="../index.html">Home</a></li>
+                 <li><a href="../media/files/WadeMoulton_Assignment4_Sockets.docx" download>Report Download</a></li>
+             </ul>
+         </nav>
+     </header>
+ 
+     <h1 class="my-name">Assignment 4 - Sockets</h1>
+     <div class="container">
+        <section class="content-section">
+            <h2 class="section-header">server.py</h2>
+            <h3>Source Code:</h3>
+            <pre>
+                <code class="language-python">
+# Name: Wade Moulton
+# Date: 10/11/2020
+# Class: CS 4720
+# Section: W01
+# Instructor: Dr. Sarah North
+# Assignment_4-Sockets
+
+import socket
+from polynomials import evaluate, bisection
+
+# creating constant variables for the server port and address using localhost address
+SERVER_PORT = 12345
+SERVER_ADDR = '127.0.0.1'
+
+# create globals for various errors that might be encountered
+ARG_EXCEPTION = "XToo few arguments"
+VALUE_EXCEPTION = "XCould not convert string to float"
+REQUEST_EXCEPTION = "XIncorrect command type"
+TOLERANCE_EXCEPTION = "XInvalid tolerance"
+
+# create socket and start listening
+listener = socket.socket()
+listener.bind((SERVER_ADDR, SERVER_PORT))
+listener.listen(0)
+print("Server started. Listening on " + SERVER_ADDR + ":" + str(SERVER_PORT))
+
+
+# infinite loop so that server can always accept connections
+while True:
+# assign and print client connection info
+(sock, address) = listener.accept()
+print(f"Received connection from: {address}")
+# assign encoded data to variable and create a new variable to store decode data
+encoded_data = sock.recv(2048)
+client_data = ""
+
+# iterate and decode through data and assign to decoded variable
+while len(encoded_data) > 0:
+    client_data += encoded_data.decode()
+    encoded_data = sock.recv(2048)
+
+try:
+    # print received data and split data into list
+    print(f"RECV: {client_data}")
+    client_data = client_data.split(" ")
+    if len(client_data) < 1:
+        raise Exception(ARG_EXCEPTION)
+
+    # splitting first value to get the command and storing in request_start
+    request = client_data[0]
+    request_start = request[0]
+
+    # if request is for evaluation function
+    if request_start == "E":
+        if len(client_data) < 2:
+            raise Exception(ARG_EXCEPTION)
+
+        # evaluation function expects an x value and a polynomial list
+        # first convert x_value to float
+        x_value = float(request[1:])
+        # convert remaining list values to floats for the polynomial values
+        poly_values = [float(i) for i in client_data[1:]]
+        # call function evaluate and assign return to response
+        response = f"E{evaluate(x_value, poly_values)}"
+
+    # if request is for bisection function
+    elif request_start == "S":
+        if len(client_data) < 3:
+            raise Exception(ARG_EXCEPTION)
+
+        # bisection function expects a value, b value, polynomial list, and tolerance value
+        # first convert a and b values to floats
+        a_value = float(request[1:])
+        b_value = float(client_data[1])
+        # convert remaining list values to floats for the polynomial values except the last value
+        poly_values = [float(i) for i in client_data[2:len(client_data) - 1]]
+        # convert tolerance value to float and check to make sure it is non-negative and not equal to 0
+        tolerance = float(client_data[-1])
+        if tolerance <= 0:
+            raise Exception(TOLERANCE_EXCEPTION)
+        # call function bisection and assign return response
+        response = f"S{bisection(a_value, b_value, poly_values, tolerance)}"
+
+    # this exception will be raised when first value is not E or S and no other exceptions have been raised
+    else:
+        raise Exception(REQUEST_EXCEPTION)
+
+# using the built in ValueError exception for issues converting strings to floats
+except ValueError:
+    response = VALUE_EXCEPTION
+# catch any other errors in case they need to be handled
+except Exception as err:
+    response = str(err)
+
+# send response to client and close socket
+print(f"SEND: {response}")
+sock.sendall(response.encode())
+sock.close()
+                </code>
+            </pre>
+            <h3>Sample Output:</h3>
+            <pre>
+                <code class="language-html">
+Server started. Listening on 127.0.0.1:12345
+Received connection from: ('127.0.0.1', 62929)
+RECV: E1.0 -945 1689 -950 230 -25 1
+SEND: E0.0
+Received connection from: ('127.0.0.1', 62930)
+RECV: S0 2 -945 1689 -950 230 -25 1 1e-15
+SEND: S1.0000000000000004
+Received connection from: ('127.0.0.1', 62931)
+RECV: G4.1 0 0
+SEND: XIncorrect command type
+Received connection from: ('127.0.0.1', 62932)
+RECV: 4 1 0
+SEND: XIncorrect command type
+Received connection from: ('127.0.0.1', 62933)
+RECV: E1.0
+SEND: XToo few arguments
+Received connection from: ('127.0.0.1', 62934)
+RECV: S1.0
+SEND: XToo few arguments
+Received connection from: ('127.0.0.1', 62935)
+RECV: S0 2 -945 1689 -950 230 -25 1 -1e-15
+SEND: XInvalid tolerance
+Received connection from: ('127.0.0.1', 62936)
+RECV: Not a number
+SEND: XIncorrect command type
+Received connection from: ('127.0.0.1', 62937)
+RECV: S0 2 -945 1689 -950 230 -25 1 0
+SEND: XInvalid tolerance
+Received connection from: ('127.0.0.1', 62938)
+RECV: S0 2 -945 1689 -950 230 G 1 1e-15
+SEND: XCould not convert string to float
+
+Process finished with exit code -1                    
+            </code>
+        </pre>
+        </section>
+        <section class="content-section">
+            <h2 class="section-header">client.py</h2>
+            <h3>Source Code:</h3>
+            <pre>
+                <code class="language-python">
+# Name: Wade Moulton
+# Date: 10/11/2020
+# Class: CS 4720
+# Section: W01
+# Instructor: Dr. Sarah North
+# Assignment_4-Sockets
+
+import socket
+
+# creating constant variables for the server port and address using localhost address
+SERVER_PORT = 12345
+SERVER_ADDR = "127.0.0.1"
+
+# create sender socket and connect to server
+sender = socket.socket()
+sender.connect((SERVER_ADDR, SERVER_PORT))
+
+# supplied testing strings list for this assignment
+testing_strings = ["E1.0 -945 1689 -950 230 -25 1",
+                    "S0 2 -945 1689 -950 230 -25 1 1e-15",
+                    "G4.1 0 0",
+                    "4 1 0",
+                    "E1.0",
+                    "S1.0",
+                    "S0 2 -945 1689 -950 230 -25 1 -1e-15",
+                    "Not a number",
+                    "S0 2 -945 1689 -950 230 -25 1 0",
+                    "S0 2 -945 1689 -950 230 G 1 1e-15"]
+
+# iterate through each item in testing strings list
+for msg in testing_strings:
+    # first print message being sent and then assign encoded message to variable and send to server
+    print(f"SEND: {msg}")
+    encoded_msg = msg.encode()
+    sender.sendall(encoded_msg)
+
+    # close connection and receive encoded data from server
+    # assign encoded data to variable
+    sender.shutdown(1)
+    encoded_data = sender.recv(2048)
+    response = ""
+
+    # iterate through encoded data, decode, and assign to string variable
+    while len(encoded_data) > 0:
+        response += encoded_data.decode()
+        encoded_data = sender.recv(2048)
+
+    # output response string from server
+    print(f"RECV: {response}")
+
+    # close sender socket
+    sender.close()
+    # on the last iteration a new connection is opened and server responds with string index out of range
+    # create if statement to ensure new connection is not made on last iteration of testing strings list
+    if msg != testing_strings[len(testing_strings) - 1]:
+        sender = socket.socket()
+        sender.connect((SERVER_ADDR, SERVER_PORT))
+
+# make sure sender socket is closed
+sender.close()                    
+                </code>
+            </pre>
+            <h3>Sample Output:</h3>
+            <pre>
+                <code class="language-html">
+SEND: E1.0 -945 1689 -950 230 -25 1
+RECV: E0.0
+SEND: S0 2 -945 1689 -950 230 -25 1 1e-15
+RECV: S1.0000000000000004
+SEND: G4.1 0 0
+RECV: XIncorrect command type
+SEND: 4 1 0
+RECV: XIncorrect command type
+SEND: E1.0
+RECV: XToo few arguments
+SEND: S1.0
+RECV: XToo few arguments
+SEND: S0 2 -945 1689 -950 230 -25 1 -1e-15
+RECV: XInvalid tolerance
+SEND: Not a number
+RECV: XIncorrect command type
+SEND: S0 2 -945 1689 -950 230 -25 1 0
+RECV: XInvalid tolerance
+SEND: S0 2 -945 1689 -950 230 G 1 1e-15
+RECV: XCould not convert string to float
+
+Process finished with exit code 0
+                </code>
+            </pre>
+        </section>
+     </div>
+<script src="../scripts/prism.js"></script>
+ </body>
+ </html>

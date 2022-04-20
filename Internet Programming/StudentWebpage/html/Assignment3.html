@@ -1,0 +1,205 @@
+<!-- 
+    Name: Wade Moulton
+    Date: 09/25/2020
+    Class: CS 4720
+    Section: W01
+    Instructor: Dr. Sarah North
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="../styles.css">
+     <link rel="stylesheet" href="../css/Assigment2.css">
+     <link rel="stylesheet" href="../css/prism.css">
+     <title>Assignment 3</title>
+ </head>
+ <body>
+     <header class="main-header">
+         <nav class="nav main-nav">
+             <ul>
+                 <li><a href="../index.html">Home</a></li>
+                 <li><a href="../media/files/WadeMoulton_Assignment3.docx" download>Report Download</a></li>
+             </ul>
+         </nav>
+     </header>
+ 
+     <h1 class="my-name">Assignment 3</h1>
+     <div class="container">
+        <section class="content-section">
+            <h2 class="section-header">helloworld.py</h2>
+            <h3>Source Code:</h3>
+            <pre>
+                <code class="language-python">
+hw_list = ['hello']
+
+def hello_world():
+    return 'Hello World'
+
+def main():
+    print(f"Welcome to my Hello World program.")
+    print(f"The list currently contains {hw_list}")
+    print(f"Now let's add world to our list!")
+    hw_list.append('world')
+    print(f"The list now contains {hw_list}")
+    print(f"{hw_list[0]} {hw_list[1]}!")
+    print(f"I can also print {hello_world()} using the hello_world() function call!")
+
+if __name__ == '__main__':
+    main()
+                </code>
+            </pre>
+            <h3>Sample Output:</h3>
+            <pre>
+                <code class="language-html">
+Welcome to my Hello World program.
+The list currently contains ['hello']
+Now let's add world to our list!
+The list now contains ['hello', 'world']
+hello world!
+I can also print Hello World using the hello_world() function call!
+            </code>
+        </pre>
+        </section>
+        <section class="content-section">
+            <h2 class="section-header">wordguesser.py</h2>
+            <h3>Source Code:</h3>
+            <pre>
+                <code class="language-python">
+# set the word once and then convert to list for easier iteration
+word = 'FOX'
+word_list = list(word)
+final_word = []
+guessed = []
+
+def guessLetter(ltr):
+    # convert letter to uppercase
+    ltr = ltr.upper()
+
+    # first check if the letter is in the word or not
+    # if letter is in word, change all occurrences of blank letters in final_word to match at correct index
+    # then check if the letter has been guessed, if not add to guessed array
+    # give user feedback based on conditions
+    if ltr in word_list or ltr.upper() in word_list:
+        for i in range(len(word_list)):
+            if word_list[i] == ltr or word_list[i].lower == ltr:
+                final_word[i] = ltr
+        if not (ltr in guessed or ltr.lower() in guessed):
+            guessed.append(ltr)
+            print(f"You found a new letter! {ltr} is in the word!")
+            print(f"Your current progress: {''.join(str(x) for x in final_word)}")
+        else:
+            print(f"The letter {ltr} is in the word, but you already guessed it. Try again!")
+            print(f"Here are your guessed letters: {','.join(str(x) for x in guessed)}")
+            print(f"Your current progress: {''.join(str(x) for x in final_word)}")
+    else:
+        if not (ltr in guessed or ltr.lower() in guessed):
+            guessed.append(ltr)
+            print(f"The letter {ltr} is not in the word. Try again!")
+        else:
+            print(f"The letter {ltr} is not in the word and you have already guessed it. Try again!")
+            print(f"Here are your guessed letters: {','.join(str(x) for x in guessed)}")
+
+
+def main():
+    print(f"I'm thinking of a {len(word)} letter word! Let's see if you can guess it!")
+    for i in range(len(word_list)):
+        final_word.append('_')
+    while word_list != final_word:
+        ltr = input('Enter a letter to guess: ').lower()
+        # check if input is alphabetic
+        if ltr.isalpha():
+            guessLetter(ltr)
+        else:
+            print('Input must be a letter. Try again!')
+
+    print("You found the word! Congratulations you win!")
+
+
+if __name__ == '__main__':
+    main()
+                </code>
+            </pre>
+            <h3>Sample Output:</h3>
+            <pre>
+                <code class="language-html">
+I'm thinking of a 3 letter word! Let's see if you can guess it!
+Enter a letter to guess: f
+You found a new letter! F is in the word!
+Your current progress: F__
+Enter a letter to guess: f
+The letter F is in the word, but you already guessed it. Try again!
+Here are your guessed letters: F
+Your current progress: F__
+Enter a letter to guess: g
+The letter G is not in the word. Try again!
+Enter a letter to guess: g
+The letter G is not in the word and you have already guessed it. Try again!
+Here are your guessed letters: F,G
+Enter a letter to guess: o
+You found a new letter! O is in the word!
+Your current progress: FO_
+Enter a letter to guess: x
+You found a new letter! X is in the word!
+Your current progress: FOX
+You found the word! Congratulations you win!
+                </code>
+            </pre>
+        </section>
+        <section class="content-section">
+            <h2 class="section-header">weathermap.py</h2>
+            <h3>Source Code:</h3>
+            <pre>
+                <code class="language-python">
+from datetime import datetime
+import urllib
+import requests
+import json
+
+# set variables 
+user_id = '###'
+user_apiid = '###'
+zip_code = 30144
+
+# set url for http request
+getURL = f'http://api.openweathermap.org/data/2.5/weather?zip={zip_code},us&appid={user_apiid}&units=imperial'
+
+
+def main():
+    # retrieve request and decode to json
+    response = urllib.request.urlopen(getURL)
+    decoded_response = response.read().decode('utf-8')
+    json_res = json.loads(decoded_response)
+
+    print(f"Name:\t\t\t\t\t{json_res['name']}")
+    print(f"Current Temperature:\t{json_res['main']['temp']} degrees Fahrenheit")
+    print(f"Atmospheric Pressure:\t{json_res['main']['pressure']} hPa")
+    print(f"Wind Speed:\t\t\t\t{json_res['wind']['speed']} mph")
+    print(f"Wind Direction:\t\t\t{json_res['wind']['deg']}")
+    timestamp = json_res['dt']
+    dt_object = datetime.fromtimestamp(timestamp)
+    print(f"Time of Report:\t\t\t{dt_object}")
+
+
+if __name__ == '__main__':
+    main()
+                </code>
+            </pre>
+            <h3>Sample Output:</h3>
+            <pre>
+                <code class="language-html">
+Name:					Kennesaw
+Current Temperature:	70.29 degrees Fahrenheit
+Atmospheric Pressure:	1016 hPa
+Wind Speed:				5.82 mph
+Wind Direction:			250
+Time of Report:			2020-09-25 20:28:07
+                </code>
+            </pre>
+        </section>
+     </div>
+<script src="../scripts/prism.js"></script>
+ </body>
+ </html>

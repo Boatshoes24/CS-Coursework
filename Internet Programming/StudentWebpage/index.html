@@ -1,0 +1,134 @@
+<!-- 
+    Name: Wade Moulton
+    Date: 08/25/2020
+    Class: CS 4720
+    Section: W01
+    Instructor: Dr. Sarah North
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Wade's Page</title>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="nav main-nav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#about_me">About Me</a></li>
+                <li><a href="#hobbies">Hobbies</a></li>
+                <li><a href="#guessing_game">Guessing Game</a></li>
+                <li><a href="#links_move">Links</a></li>
+                <li><a href="#assignments">Assignments</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1 class="my-name">Wade's Page</h1>
+    <div class="container">
+        <section class="content-section">
+            <h2 id="about_me" class="section-header">About Me</h2>
+            <img src="media/profile.png" alt="profile" class="profile-img">
+            <p class="inner-content">
+                Hello, my name is <strong>Wade</strong> and I am currently a senior at KSU studying CS. I decided to come back to school after finishing
+                my Associate degree and working as a help desk technician for a few years to better my career opportunities as well as to 
+                shift gears to a more developer-oriented future. In my time as a student I have had exposure to <i>Java</i>, <i>C++</i>, <i>HTML</i>, <i>CSS</i>, <i>Javascript</i>, and <i>Python</i>
+                as well as <i>Lua</i> in my spare time. My motivation to become a developer comes from a desire to build tools that make things easier (or prettier)
+                not only for myself, but for others as well. 
+                <br />
+                <br />
+                As far as my personal life goes I have both a cat and a dog who I absolutely try to spoil as much as possible. I am from Georgia originally and
+                have moved lived all over including Kennesaw, Marietta, Powder Springs, Vinings, Atlanta, Macon, and Augusta.            
+            </p>
+        </section>
+        <section class="content-section">
+            <h2 id="hobbies" class="section-header">Hobbies</h2>
+            <img src="media/controller.png" alt="controller" class="profile-img">
+            <ul class="hobby-ul inner-content">
+                <li>Hiking (usually on Kennesaw Mountain)</li>
+                <li>Cycling</li>
+                <li>Video Games (typically pc)</li>
+                <li>Personal Programming Projects</li>
+                    <ul class="hobby-ul-inner">
+                        <li>Discord Bot Development</li>
+                        <li>Working with game API's to create in-game add-ons</li>
+                    </ul>
+                <li>Cooking at a very amateur level</li>
+                <li>Going to see movies</li>
+            </ul>
+        </section>
+        <section class="content-section" id="links_move">
+            <h2 id="guessing_game" class="section-header">Guessing Game</h2>
+            <div class="guessing-game-section">
+                <p id="guess-paragraph" class="inner-content">I'm thinking of a number between 1 and 10.<br />Please submit your guess!</p>
+                <input type="text" name="guess-input" id="guess-input">
+                <button id="guess-btn">Guess</button>
+                <button id="reset-btn">Reset</button>
+            </div>
+        </section>
+        <section class="content-section">
+            <h2 class="section-header">Links</h2>
+            <p class="inner-content footer-text">I don't have any active social media accounts so I'll leave some links I frequent below.</p>
+            <nav class="nav">
+                <ul class="links-ul">
+                    <li><a href="http://github.com" target="blank_">Github</a></li>
+                    <li><a href="http://google.com" target="blank_">Google</a></li>
+                    <li><a href="http://discord.js.org" target="blank_">Discord.JS</a></li>
+                    <li><a href="http://stackoverflow.com" target="blank_">Stack Overflow</a></li>
+                    <li><a href="http://reddit.com" target="blank_">Reddit</a></li>
+                    <li><a href="http://twitch.com" target="blank_">Twitch</a></li>
+                    <li><a href="http://youtube.com" target="blank_">Youtube</a></li>
+                </ul>
+            </nav>
+        </section>
+        <section class="content-section">
+            <h2 class="section-header" id="assignments">Assignments</h2>
+            <p class="inner-content footer-text">Listed below are the various Assignment links.</p>
+            <nav class="nav">
+                <ul class="links-ul">
+                    <li><a href="./html/Assignment2.html">Assignment 2</a></li>
+                    <li><a href="./html/Assignment3.html">Assignment 3</a></li>
+                    <li><a href="./html/Assignment4-Database.html">Assignment_4-Database</a></li>
+                    <li><a href="./html/Assignment4-Socket.html">Assignment_4-Socket</a></li>
+                    <li><a href="./html/Assignment5.html">Assignment 5</a></li>
+                </ul>
+            </nav>
+        </section>
+    </div>
+
+    <script>
+        let rand = Math.floor(Math.random() * 10 + 1)
+        const guessParagraph = document.getElementById('guess-paragraph')
+        const defaultParagraphText = guessParagraph.innerText
+        const guessBtn = document.getElementById('guess-btn')
+        const resetBtn = document.getElementById('reset-btn')
+        const input = document.getElementById('guess-input')
+
+        guessBtn.addEventListener("click", () => {
+            guessParagraph.innerText = `You guessed: ${input.value}\n`
+            let guessInt = parseInt(input.value)
+            if(!guessInt)
+                guessParagraph.innerText += 'You must guess using a number between 1 and 10!'
+            if(guessInt < 1 || guessInt > 10)
+                guessParagraph.innerText += 'Your guess must be between 1 and 10!'
+            if(guessInt < rand && guessInt > 0)
+                guessParagraph.innerText += 'You guessed too low!'
+            else if(guessInt > rand && guessInt <= 10)
+                guessParagraph.innerText += 'You guessed too high!'
+            else if(guessInt === rand)
+                guessParagraph.innerText += 'You guessed the number!\nPress reset to play again!'
+        })
+
+        resetBtn.addEventListener("click", () => {
+            guessParagraph.innerText = defaultParagraphText
+            rand = Math.floor(Math.random() * 10 + 1)
+            input.value = null
+        })
+
+    </script>
+</body>
+</html>

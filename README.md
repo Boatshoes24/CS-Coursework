@@ -1,1 +1,1 @@
-readme
+Repo for some of my school coursework 

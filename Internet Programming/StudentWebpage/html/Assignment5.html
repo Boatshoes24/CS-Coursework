@@ -1,0 +1,262 @@
+<!-- 
+    Name: Wade Moulton
+    Date: 10/27/2020
+    Class: CS 4720
+    Section: W01
+    Instructor: Dr. Sarah North
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="../styles.css">
+     <link rel="stylesheet" href="../css/Assigment2.css">
+     <link rel="stylesheet" href="../css/prism.css">
+     <title>Assignment 5</title>
+ </head>
+ <body>
+     <header class="main-header">
+         <nav class="nav main-nav">
+             <ul>
+                 <li><a href="../index.html">Home</a></li>
+                 <li><a href="../media/files/WadeMoulton_Assignment5.docx" download>Report Download</a></li>
+             </ul>
+         </nav>
+     </header>
+ 
+     <h1 class="my-name">Assignment 5</h1>
+     <div class="container">
+        <section class="content-section">
+            <h2 class="section-header">request.py</h2>
+            <h3>Source Code:</h3>
+            <pre>
+                <code class="language-python">
+# Name: Wade Moulton
+# Date: 10/27/2020
+# Class: CS 4720
+# Section: W01
+# Instructor: Dr. Sarah North
+# Assignment_5
+
+
+# references used for assignment:
+# given ppt slides and https://requests.readthedocs.io/en/master/user/quickstart/
+
+# first import requests
+import requests
+
+# get user input for website and output file name
+user_input = input("Enter a website and file name separated by a space (<website> <filename>): ")
+
+# split the website and output into array to separate
+user_input = user_input.split(" ")
+# assign user values to variables if appropriate # of args
+# if not right # of args raise exception
+if len(user_input) < 2:
+    raise ValueError("Must have a website and output file name.")
+(user_input_url, user_input_filename) = user_input
+
+# check for .txt and http:// in the user inputs and add if needed
+if ".txt" not in user_input_filename:
+    user_input_filename += ".txt"
+if "http://" not in user_input_url:
+    user_input_url = f"http://{user_input_url}"
+
+# next send http request
+req = requests.get(user_input_url)
+# raise an exception if bad request made
+req.raise_for_status()
+
+# assign status code to a variable and print to console
+status_code = req.status_code
+print("{:<15}{:<20}\n{:<15}{:<20}".format("Request to: ", user_input_url, "Status code: ", status_code))
+
+# try to create response file
+try:
+    # check that status code is good and then assign the response text to variable]
+    if status_code == 200:
+        res_text = req.text
+
+        # create or override file and set encoding to utf-8
+        res_file = open(user_input_filename, "w", encoding="utf-8")
+
+        # write response text content to file
+        res_file.write(res_text)
+        # close the file
+        res_file.close()
+        # print confirmation that file was created
+        print("{:<15}{:<20}".format("File created: ", user_input_filename))
+
+        # ask if user would like to print full response instead of doing automatically
+        print_full_response = input("Would you like to print the full response to console (y/n): ")
+        if print_full_response.lower() == "y":
+            print(res_text)
+
+# catch any additional exceptions and print to console
+except Exception as e:
+    print(e)
+
+                    
+                    
+                </code>
+            </pre>
+            <h3>Console Output:</h3>
+            <pre>
+                <code class="language-html">
+Enter a website and file name separated by a space (<website> <filename>): http://studentweb.kennesaw.edu/~jmoulto2/ response
+Request to:    http://studentweb.kennesaw.edu/~jmoulto2/
+Status code:   200                 
+File created:  response.txt        
+Would you like to print the full response to console (y/n): n
+
+Process finished with exit code 0
+                </code>
+            </pre>
+            <h3>Response.txt:</h3>
+            <pre>
+                <code class="language-html">
+                    <script type="text/plain" class="language-html">
+<!-- 
+    Name: Wade Moulton
+    Date: 08/25/2020
+    Class: CS 4720
+    Section: W01
+    Instructor: Dr. Sarah North
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en"> 
+ <head> 
+     <meta charset="UTF-8"> 
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+     <link rel="stylesheet" href="styles.css"> 
+     <title>Wade's Page</title> 
+ </head> 
+ <body> 
+     <header class="main-header"> 
+         <nav class="nav main-nav"> 
+             <ul> 
+                 <li><a href="#">Home</a></li> 
+                 <li><a href="#about_me">About Me</a></li> 
+                 <li><a href="#hobbies">Hobbies</a></li> 
+                 <li><a href="#guessing_game">Guessing Game</a></li> 
+                 <li><a href="#links_move">Links</a></li> 
+                 <li><a href="#assignments">Assignments</a></li> 
+             </ul> 
+         </nav> 
+     </header> 
+ 
+     <h1 class="my-name">Wade's Page</h1> 
+     <div class="container"> 
+         <section class="content-section"> 
+             <h2 id="about_me" class="section-header">About Me</h2> 
+             <img src="media/profile.png" alt="profile" class="profile-img"> 
+             <p class="inner-content"> 
+                 Hello, my name is <strong>Wade</strong> and I am currently a senior at KSU studying CS. I decided to come back to school after finishing 
+                 my Associate degree and working as a help desk technician for a few years to better my career opportunities as well as to  
+                 shift gears to a more developer-oriented future. In my time as a student I have had exposure to <i>Java</i>, <i>C++</i>, <i>HTML</i>, <i>CSS</i>, <i>Javascript</i>, and <i>Python</i> 
+                 as well as <i>Lua</i> in my spare time. My motivation to become a developer comes from a desire to build tools that make things easier (or prettier) 
+                 not only for myself, but for others as well. 
+                 <br /> 
+                 <br /> 
+                 As far as my personal life goes I have both a cat and a dog who I absolutely try to spoil as much as possible. I am from Georgia originally and 
+                 have moved lived all over including Kennesaw, Marietta, Powder Springs, Vinings, Atlanta, Macon, and Augusta. 
+             </p> 
+         </section> 
+         <section class="content-section"> 
+             <h2 id="hobbies" class="section-header">Hobbies</h2> 
+             <img src="media/controller.png" alt="controller" class="profile-img"> 
+             <ul class="hobby-ul inner-content"> 
+                 <li>Hiking (usually on Kennesaw Mountain)</li> 
+                 <li>Cycling</li> 
+                 <li>Video Games (typically pc)</li> 
+                 <li>Personal Programming Projects</li> 
+                     <ul class="hobby-ul-inner"> 
+                         <li>Discord Bot Development</li> 
+                         <li>Working with game API's to create in-game add-ons</li> 
+                     </ul> 
+                 <li>Cooking at a very amateur level</li> 
+                 <li>Going to see movies</li> 
+             </ul> 
+         </section> 
+         <section class="content-section" id="links_move"> 
+             <h2 id="guessing_game" class="section-header">Guessing Game</h2> 
+             <div class="guessing-game-section"> 
+                 <p id="guess-paragraph" class="inner-content">I'm thinking of a number between 1 and 10.<br />Please submit your guess!</p> 
+                 <input type="text" name="guess-input" id="guess-input"> 
+                 <button id="guess-btn">Guess</button> 
+                 <button id="reset-btn">Reset</button> 
+             </div> 
+         </section> 
+         <section class="content-section"> 
+             <h2 class="section-header">Links</h2> 
+             <p class="inner-content footer-text">I don't have any active social media accounts so I'll leave some links I frequent below.</p> 
+             <nav class="nav"> 
+                 <ul class="links-ul"> 
+                     <li><a href="http://github.com" target="blank_">Github</a></li> 
+                     <li><a href="http://google.com" target="blank_">Google</a></li> 
+                     <li><a href="http://discord.js.org" target="blank_">Discord.JS</a></li> 
+                     <li><a href="http://stackoverflow.com" target="blank_">Stack Overflow</a></li> 
+                     <li><a href="http://reddit.com" target="blank_">Reddit</a></li> 
+                     <li><a href="http://twitch.com" target="blank_">Twitch</a></li> 
+                     <li><a href="http://youtube.com" target="blank_">Youtube</a></li> 
+                 </ul> 
+             </nav> 
+         </section> 
+         <section class="content-section"> 
+             <h2 class="section-header" id="assignments">Assignments</h2> 
+             <p class="inner-content footer-text">Listed below are the various Assignment links.</p> 
+             <nav class="nav"> 
+                 <ul class="links-ul"> 
+                     <li><a href="./html/Assignment2.html">Assignment 2</a></li> 
+                     <li><a href="./html/Assignment3.html">Assignment 3</a></li> 
+                     <li><a href="./html/Assignment4-Database.html">Assignment_4-Database</a></li> 
+                     <li><a href="./html/Assignment4-Socket.html">Assignment_4-Socket</a></li> 
+                 </ul> 
+             </nav> 
+         </section> 
+     </div> 
+ 
+     <script> 
+         let rand = Math.floor(Math.random() * 10 + 1) 
+         const guessParagraph = document.getElementById('guess-paragraph') 
+         const defaultParagraphText = guessParagraph.innerText 
+         const guessBtn = document.getElementById('guess-btn') 
+         const resetBtn = document.getElementById('reset-btn') 
+         const input = document.getElementById('guess-input') 
+ 
+         guessBtn.addEventListener("click", () => { 
+             guessParagraph.innerText = `You guessed: ${input.value}\n` 
+             let guessInt = parseInt(input.value) 
+             if(!guessInt) 
+                 guessParagraph.innerText += 'You must guess using a number between 1 and 10!' 
+             if(guessInt < 1 || guessInt > 10) 
+                 guessParagraph.innerText += 'Your guess must be between 1 and 10!' 
+             if(guessInt < rand && guessInt > 0) 
+                 guessParagraph.innerText += 'You guessed too low!' 
+             else if(guessInt > rand && guessInt <= 10) 
+                 guessParagraph.innerText += 'You guessed too high!' 
+             else if(guessInt === rand) 
+                 guessParagraph.innerText += 'You guessed the number!\nPress reset to play again!' 
+         }) 
+ 
+         resetBtn.addEventListener("click", () => { 
+             guessParagraph.innerText = defaultParagraphText 
+             rand = Math.floor(Math.random() * 10 + 1) 
+             input.value = null 
+         }) 
+ 
+     </script> 
+ </body> 
+ </html>     </script>            
+            </code>
+        </pre>
+        </section>
+
+        </section>
+     </div>
+<script src="../scripts/prism.js"></script>
+ </body>
+ </html>

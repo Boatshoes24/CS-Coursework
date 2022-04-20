@@ -1,0 +1,146 @@
+/* 
+    Name: Wade Moulton
+    Date: 08/25/2020
+    Class: CS 4720
+    Section: W01
+    Instructor: Dr. Sarah North
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: Roboto;
+    color: #ccc;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: url('./media/background.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    background-color: #1c1c1c;
+}
+
+.nav ul {
+    margin: 0;
+}
+
+.nav li {
+    display: inline;
+}
+
+.nav a {
+    display: inline-block;
+    padding: 1em;
+    text-decoration: none;
+}
+
+.main-nav li {
+    padding: 0 5%;
+}
+
+.inner-content {
+    font-size: 1.2em;
+}
+
+.my-name {
+    text-align: center;
+    margin: 100px auto 0 auto;
+    font-size: 3em;
+    padding: 0.3em;
+}
+
+.main-nav {
+    text-align: center;
+    font-size: 1.1em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav a:hover {
+    color: white;
+}
+
+strong, i {
+    color: #3cffbf;
+}
+
+.main-header {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.content-section {
+    margin: 1em;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0.5em 1.5em;
+    background-color: rgba(15, 15, 15, 0.85);
+    border: 1px solid black;
+    border-radius: 25px;
+}
+
+.footer-text {
+    text-align: center;
+}
+
+.links-ul a{
+    color: rgb(255, 187, 1);
+}
+
+.section-header {
+    border-bottom: 1px solid rgba(0, 255, 221, 0.3);
+    font-size: 2em;
+    text-align: center;
+    padding-top: 20px;
+    color: rgba(255, 255, 128, 0.9);
+}
+
+.hobby-ul {
+    width: 60%;
+    /* list-style-type: none; */
+}
+
+.hobby-ul li {
+    color: #00ffff;
+}
+
+button {
+    color: black;
+}
+
+input {
+    color: black;
+}
+
+.hobby-ul-inner li {
+    color: #0aff25;
+}
+
+.profile-img {
+    width: 250px;
+    float: right;
+    margin: 15px;
+}
+
+.guessing-game-section {
+    text-align: center;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
